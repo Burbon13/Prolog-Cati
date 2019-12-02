@@ -8,6 +8,17 @@ list_contains([1,2,3,4],1),
 list_contains([1,2,3,4],4),
 not(list_contains([1,2,3,4],44)),
 
+/* empty_cell_correct_position */
+empty_cell_correct_position([1, 3, 6, 9, 10, 2, 13, 15, 14, 7, 0, 5, 8, 4, 11, 12], 11),
+not(empty_cell_correct_position([1, 3, 6, 9, 10, 2, 13, 15, 14, 7, 0, 5, 8, 4, 11, 12], 12)),
+not(empty_cell_correct_position([1, 3, 6, 9, 10, 2, 13, 15, 14, 7, 0, 5, 8, 4, 11, 12], 10)),
+empty_cell_correct_position([0,2,3],1),
+empty_cell_correct_position([1,0,3],2),
+empty_cell_correct_position([1,2,0],3),
+not(empty_cell_correct_position([1,0,3],-2)),
+not(empty_cell_correct_position([1,0,3],20)),
+not(empty_cell_correct_position([1,1,3],2)),
+
 /* valid_value */
 valid_value(0),
 valid_value(6),

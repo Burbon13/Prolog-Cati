@@ -14,6 +14,16 @@ list_contains_right_values(List):-
     verify_content(List, [], 0).
 
 
+/* empty_cell_correct_position(List, Pos) verifies that the empty cell (0) is
+ * at position Pos inside the list */
+ empty_cell_correct_position([0|_], 1):-!.
+ empty_cell_correct_position([H|T], Pos):-
+    H =\= 0,
+    Pos > 1,
+    NewPos is Pos - 1,
+    empty_cell_correct_position(T, NewPos).
+
+
 /* verify_content(List, Bucket, Size) verifies at each step that the Head of
  * List is not inside Bucket and that its value is between 0 and 15. Then it
  * adds the Head to the Bucket and proceeds to do the same verification for
