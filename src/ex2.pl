@@ -9,6 +9,9 @@
     bottom_neighbour(S0, NextBottom).
 
 
+/*  */
+
+
 /* right_neighbour(S0, S1) verifies that S1 is an upcoming state of S0 by one
  * move to right; S0 and S1 should be valid states */
 right_neighbour([_, 4], -1):-!.
@@ -18,20 +21,19 @@ right_neighbour([_, 16], -1):-!.
 right_neighbour([List, Position], [ListNeighbour, PositionNeighbour]):-
     NextPosition is Position + 1,
     NextPosition =:= PositionNeighbour,
-    swap_elems(List, Position, NextPosition, ListNeighbour),
-    !.
+    swap_elems(List, Position, NextPosition, ListNeighbour).
 
 
 /* top_neighbour(S0, S1) verifies that S1 is an upcoming state of S0 by one
  * move to top; S0 and S1 should be valid states */
+ top_neighbour([_, Position], -1):-
+     Position < 5,
+     !.
 top_neighbour([List, Position], [ListNeighbour, PositionNeighbour]):-
     Position > 4,
     NextPosition is Position - 4,
     NextPosition =:= PositionNeighbour,
-    swap_elems(List, Position, NextPosition, ListNeighbour),
-    !.
-top_neighbour([_, Position], -1):-
-    Position < 5.
+    swap_elems(List, Position, NextPosition, ListNeighbour).
 
 
 /* left_neighbour(S0, S1) verifies that S1 is an upcoming state of S0 by one
@@ -43,8 +45,7 @@ left_neighbour([_, 13], -1):-!.
 left_neighbour([List, Position], [ListNeighbour, PositionNeighbour]):-
     NextPosition is Position - 1,
     NextPosition =:= PositionNeighbour,
-    swap_elems(List, Position, NextPosition, ListNeighbour),
-    !.
+    swap_elems(List, Position, NextPosition, ListNeighbour).
 
 
 
