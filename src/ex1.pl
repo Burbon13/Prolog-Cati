@@ -4,7 +4,9 @@
 
 /* signal(Connection, Circuit, Inputs, Value) */
 signal(Connection, Circuit, Inputs, Value):-
-    signal_calculator(Circuit, Inputs, Outputs),
+    circuit(Circuit),
+    delete_comments(Circuit, NoCommsCircuit),
+    signal_calculator(NoCommsCircuit, Inputs, Outputs),
     has_value(Outputs, Connection, Value).
 
 

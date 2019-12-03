@@ -99,13 +99,16 @@ signal(
           o3,
           [gate(g1, and, [i1, i2], o1),
             gate(g2, xor, [o1, i3], o2),
-            gate(g3, xor, [o2, i4], o3)],
+            com("Gate to generate the sum bit"),
+            gate(g3, xor, [o2, i4], o3),
+            com("Gate to generate the sum bit")],
           [sig(i1,1),sig(i2,1),sig(i3,1)],
           1
           ),
 signal(
           o3,
           [gate(g1, and, [i1, i2], o1),
+          com("Gate to generate the sum bit"),
             gate(g2, xor, [o1, i3], o2),
             gate(g3, xor, [o2, i4], o3)],
           [sig(i1,1),sig(i2,0),sig(i3,1)],
