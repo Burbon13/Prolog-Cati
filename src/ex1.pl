@@ -1,8 +1,8 @@
 /* Exercise 2 - Circuits */
 
 
-/* remove_comments(List, Res) removes the comments from List and saves the
- * result inside Res */
+/* delete_comments(List, Res) removes the comments from List and saves the
+ * result inside Res OR checks if Res equals to List withous comments */
 delete_comments([], []):-!.
 delete_comments([H|T], Res):-
     is_comment(H),
