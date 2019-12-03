@@ -36,20 +36,24 @@ bit_ops_result(Inputs, and, [H|T], Result):-
     !.
 bit_ops_result(_, and, _, 0):-!.
 /* NOR operation */
-bit_ops_result(Inputs, nor, Bits, 1):-
-    bit_ops_result(Inputs, or, Bits, 0),
+bit_ops_result(Inputs, nor, Bits, Result):-
+    bit_ops_result(Inputs, or, Bits, NotResult),
+    negate(NotResult, Result),
     !.
-bit_ops_result(_, nor, _, 0):-!.
 /* NAND operation */
-bit_ops_result(Inputs, nand, Bits, 1):-
-    bit_ops_result(Inputs, and, Bits, 0),
+bit_ops_result(Inputs, nand, Bits, Result):-
+    bit_ops_result(Inputs, and, Bits, NotResult),
+    negate(NotResult, Result),
     !.
-bit_ops_result(_, nand, _, 0):-!.
 /* NOT operation*/
 bits_ops(Inputs, not, Bit, 1):-
     not(is_true(Inputs, Bit)),
     !.
 
+
+/* negate */
+negate(1, 0):-!.
+negate(0, 1).
 
 
 /* is_true(Inputs, Term) */
