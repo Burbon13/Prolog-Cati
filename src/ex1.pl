@@ -1,6 +1,38 @@
 /* Exercise 2 - Circuits */
 
 
+/* connections_list(C, Connections) is True if Connections is the list of all
+ * the connections names of Circuit C */
+connections_list([], []):-!.
+connections_list([H|T], Connections):-
+    is_comment(H),
+    connections_list(T, Connections),
+    !.
+connections_list([H|T], Connections):-
+    is_gate(H),
+    get_name(H, GateName),
+    is_in(Connections, GateName),
+    remove_val(Connections, GateName, NewConnections),
+    connections_list(T, NewConnections).
+
+
+/* get_name(Gate, Name) saves the name of the gate inside Name */
+get_name(gate(Name, _, _, _), Name).
+
+
+/* is_in(List, Value) verifies if Value exists inside List */
+is_in([H|_], H):-!.
+is_in([_|T], Val):-
+    is_in(T, Val).
+
+
+/* remove_val(List, Val, NewList) removes Val from List and stores it to NewList */
+remove_val([],_,[]):-!.
+remove_val([H|T], H, T):-!.
+remove_val([H|T], Val, [H|Res]):-
+    remove_val(T, Val, Res).
+
+
 /* delete_comments(List, Res) removes the comments from List and saves the
  * result inside Res OR checks if Res equals to List withous comments */
 delete_comments([], []):-!.

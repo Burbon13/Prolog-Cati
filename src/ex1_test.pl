@@ -2,7 +2,57 @@
 /* To run the tests copy all of the code below this line and run it. */
 /* If the result is True, yay, all tests passed. */
 
-/* delete_comments */
+/* connections_list */
+connections_list([gate(x1, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(x2, xor, [t1, i3], o1),
+    gate(a1, and, [i1, i2], t2),
+    gate(a4, not, i1, o5),
+    gate(a2, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(o7, or, [t3, t2], o2)],
+    [x1, x2, a1, a4, a2, o7]),
+connections_list([gate(t0, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(t1, xor, [t1, i3], o1),
+    gate(t2, and, [i1, i2], t2),
+    gate(t3, not, i1, o5),
+    gate(t4, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(t5, or, [t3, t2], o2)],
+    [t0, t1, t2, t3, t4, t5]),
+not(connections_list([gate(t0, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(t1, xor, [t1, i3], o1),
+    gate(t2, and, [i1, i2], t2),
+    gate(t3, not, i1, o5),
+    gate(t4, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(t5, or, [t3, t2], o2)],
+    [t0, t1, t2, t3, t4, t6])),
+not(connections_list([gate(t0, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(t1, xor, [t1, i3], o1),
+    gate(t2, and, [i1, i2], t2),
+    gate(t3, not, i1, o5),
+    gate(t4, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(t5, or, [t3, t2], o2)],
+    [t0, t1, t2, t3, t4])),
+not(connections_list([gate(t0, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(t1, xor, [t1, i3], o1),
+    gate(t2, and, [i1, i2], t2),
+    gate(t3, not, i1, o5),
+    gate(t4, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(t5, or, [t3, t2], o2)],
+    [t0, t1, t2, t3, t4, t5,t6])),
+
+
+/* get_name */
+get_name(gate(a1, and, [i1, i2], t2), a1),
+get_name(gate(at1, and, [i1, i2], t2), at1),
 
 /* remove_comments */
 delete_comments([
