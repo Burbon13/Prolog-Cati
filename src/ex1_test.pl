@@ -2,6 +2,70 @@
 /* To run the tests copy all of the code below this line and run it. */
 /* If the result is True, yay, all tests passed. */
 
+/* bit_ops_result */
+/* OR */
+bit_ops_result([sig(t1,1), sig(t2,0)], or, [t1,t2], Res1),
+Res1 =:= 1,
+bit_ops_result([sig(t1,1), sig(t2,1)], or, [t1,t2], Res2),
+Res2 =:= 1,
+bit_ops_result([sig(t1,0), sig(t2,1)], or, [t1,t2], Res3),
+Res3 =:= 1,
+bit_ops_result([sig(t1,0), sig(t2,0)], or, [t1,t2], Res4),
+Res4 =:= 0,
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,0)], or, [t1,t2,t3,t20], Res5),
+Res5 =:= 0,
+bit_ops_result([sig(t1,1), sig(t2,0), sig(t3,0), sig(t20,0)], or, [t1,t2,t3,t20], Res6),
+Res6 =:= 1,
+bit_ops_result([sig(t1,1), sig(t2,0), sig(t3,1), sig(t20,0)], or, [t1,t2,t3,t20], Res7),
+Res7 =:= 1,
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,1)], or, [t1,t2,t3,t20], Res8),
+Res8 =:= 1,
+/* AND */
+bit_ops_result([sig(t1,1), sig(t2,0)], and, [t1,t2], 0),
+bit_ops_result([sig(t1,1), sig(t2,1)], and, [t1,t2], 1),
+bit_ops_result([sig(t1,0), sig(t2,1)], and, [t1,t2], 0),
+bit_ops_result([sig(t1,0), sig(t2,0)], and, [t1,t2], 0),
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,0)], and, [t1,t2,t3,t20], 0),
+bit_ops_result([sig(t1,1), sig(t2,1), sig(t3,1), sig(t20,1)], and, [t1,t2,t3,t20], 1),
+bit_ops_result([sig(t1,1), sig(t2,0), sig(t3,1), sig(t20,0)], and, [t1,t2,t3,t20], 0),
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,1)], and, [t1,t2,t3,t20], 0),
+/* NOR */
+bit_ops_result([sig(t1,1), sig(t2,0)], nor, [t1,t2], 0),
+bit_ops_result([sig(t1,1), sig(t2,1)], nor, [t1,t2], 0),
+bit_ops_result([sig(t1,0), sig(t2,1)], nor, [t1,t2], 0),
+bit_ops_result([sig(t1,0), sig(t2,0)], nor, [t1,t2], 1),
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,0)], nor, [t1,t2,t3,t20], 1),
+bit_ops_result([sig(t1,1), sig(t2,0), sig(t3,0), sig(t20,0)], nor, [t1,t2,t3,t20], 0),
+bit_ops_result([sig(t1,1), sig(t2,0), sig(t3,1), sig(t20,0)], nor, [t1,t2,t3,t20], 0),
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,1)], nor, [t1,t2,t3,t20], 0),
+/* NAND */
+bit_ops_result([sig(t1,1), sig(t2,0)], nand, [t1,t2], 1),
+bit_ops_result([sig(t1,1), sig(t2,1)], nand, [t1,t2], 0),
+bit_ops_result([sig(t1,0), sig(t2,1)], nand, [t1,t2], 1),
+bit_ops_result([sig(t1,0), sig(t2,0)], nand, [t1,t2], 1),
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,0)], nand, [t1,t2,t3,t20], 1),
+bit_ops_result([sig(t1,1), sig(t2,1), sig(t3,1), sig(t20,1)], nand, [t1,t2,t3,t20], 0),
+bit_ops_result([sig(t1,1), sig(t2,0), sig(t3,1), sig(t20,0)], nand, [t1,t2,t3,t20], 1),
+bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,1)], nand, [t1,t2,t3,t20], 1),
+/* NOT */
+bit_ops_result([sig(t1,1), sig(t2,0)], nand, t1, 1),
+bit_ops_result([sig(t1,1), sig(t2,0)], nand, t2, 0),
+
+/* hav_value */
+has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o1, 0),
+has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o2, 0),
+has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o3, 1),
+not(has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o4, 1)),
+not(has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o3, 0)),
+
+/* signal_value_equals */
+signal_value_equals(sig(o1, 0), o1, 0),
+signal_value_equals(sig(o1, 1), o1, 1),
+not(signal_value_equals(sig(o1, 0), o1, 1)),
+not(signal_value_equals(sig(o1, 1), o1, 0)),
+not(signal_value_equals(sig(o1, 1), o2, 1)),
+not(signal_value_equals(sig(o2, 1), o1, 1)),
+
 /* connections_list */
 connections_list([gate(x1, xor, [i1, i2], t1),
     com("Gate to generate the sum bit"),

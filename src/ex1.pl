@@ -1,5 +1,84 @@
 /* Exercise 2 - Circuits */
 
+/* signal(Connection, Circuit, Inputs, Value) */
+signal(Connection, Circuit, Inputs, Value):-
+    signal_calculator(Circuit, Inputs, [], Outputs),
+    has_value(Outputs, Connection, Value).
+
+
+/* signal_calculator(Circuit, Inputs, Intermediary, Outputs) */
+signal_calculator([], _, Outputs, Outputs):-!.
+signal_calculator([H|T], Inputs, Intermediary, Outputs):-
+    execute_gate(H, Inputs, Intermediary, NewIntermediary),
+    signal_calculator(T, Inputs, NewIntermediary, Outputs).
+
+
+/* execute_gate(Gate, Inputs, Intermediary, Result) */
+execute_gate(gate(Name, Operation, Input, Output), Inputs, Intermediary, Result):-
+    bit_ops_result(Inputs, Operation, Input, BitOpsResult),
+    insert_output(Intermediary, Output, BitOpsResult, Result).
+
+
+/* bit_ops_result(Inputs, Operation, Bits, Result) */
+/* OR operation */
+bit_ops_result(_, or, [], 0):-!.
+bit_ops_result(Inputs, or, [H|_], 1):-
+    is_true(Inputs, H),
+    !.
+bit_ops_result(Inputs, or, [_|T], Result):-
+    bit_ops_result(Inputs, or, T, Result),
+    !.
+/* AND operation */
+bit_ops_result(_, and, [], 1):-!.
+bit_ops_result(Inputs, and, [H|T], Result):-
+    is_true(Inputs, H),
+    bit_ops_result(Inputs, and, T, Result),
+    !.
+bit_ops_result(_, and, _, 0):-!.
+/* NOR operation */
+bit_ops_result(Inputs, nor, Bits, 1):-
+    bit_ops_result(Inputs, or, Bits, 0),
+    !.
+bit_ops_result(_, nor, _, 0):-!.
+/* NAND operation */
+bit_ops_result(Inputs, nand, Bits, 1):-
+    bit_ops_result(Inputs, and, Bits, 0),
+    !.
+bit_ops_result(_, nand, _, 0):-!.
+/* NOT operation*/
+bits_ops(Inputs, not, Bit, 1):-
+    not(is_true(Inputs, Bit)),
+    !.
+
+
+
+/* is_true(Inputs, Term) */
+is_true([sig(Name, 1)|_], Name):-!.
+is_true([_|T], Name):-
+    is_true(T, Name).
+
+
+/* insert_output(List, Output, BitOpsResult, Result) returns List with the
+ * newly inserter or updated signal(Output, BitOpsResult) */
+insert_output([], Output, BitOpsResult, [sig(Output, BitOpsResult)]):-!.
+insert_output([sig(Output, _)|T], Output, BitOpsResult, [sig(Output, BitOpsResult)|T]):-!.
+insert_output([H|T], Output, BitOpsResult, [H|Result]):-
+    insert_output(T, Output, BitOpsResult, Result).
+
+
+/* has_value(List, Connection, Value) verifies if there is any signal inside
+ * Signals that has the given Connection and Value */
+has_value([H|_], Connection, Value):-
+    signal_value_equals(H, Connection, Value),
+    !.
+has_value([_|T], Connection, Value):-
+    has_value(T, Connection, Value).
+
+
+/* signal_value_equals(Signal, Connection, Value) verifies that Signal has
+ * the Connection and the Value set*/
+signal_value_equals(sig(Connection, Value), Connection, Value).
+
 
 /* connections_list(C, Connections) is True if Connections is the list of all
  * the connections names of Circuit C */
