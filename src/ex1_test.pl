@@ -94,6 +94,24 @@ Rxo7 =:= 0,
 bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,1)], xor, [t1,t2,t3,t20], Rxo8),
 Rxo8 =:= 1,
 
+/* signal */
+signal(
+          o3,
+          [gate(g1, and, [i1, i2], o1),
+            gate(g2, xor, [o1, i3], o2),
+            gate(g3, xor, [o2, i4], o3)],
+          [sig(i1,1),sig(i2,1),sig(i3,1)],
+          1
+          ),
+signal(
+          o3,
+          [gate(g1, and, [i1, i2], o1),
+            gate(g2, xor, [o1, i3], o2),
+            gate(g3, xor, [o2, i4], o3)],
+          [sig(i1,1),sig(i2,0),sig(i3,1)],
+          0
+          ),
+
 /* hav_value */
 has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o1, 0),
 has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o2, 0),

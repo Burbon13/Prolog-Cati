@@ -1,20 +1,22 @@
 /* Exercise 2 - Circuits */
 
+/*TODO: Verif if circout is valid and remove comments from circiut*/
+
 /* signal(Connection, Circuit, Inputs, Value) */
 signal(Connection, Circuit, Inputs, Value):-
-    signal_calculator(Circuit, Inputs, [], Outputs),
+    signal_calculator(Circuit, Inputs, Outputs),
     has_value(Outputs, Connection, Value).
 
 
 /* signal_calculator(Circuit, Inputs, Intermediary, Outputs) */
-signal_calculator([], _, Outputs, Outputs):-!.
-signal_calculator([H|T], Inputs, Intermediary, Outputs):-
-    execute_gate(H, Inputs, Intermediary, NewIntermediary),
-    signal_calculator(T, Inputs, NewIntermediary, Outputs).
+signal_calculator([], Outputs, Outputs):-!.
+signal_calculator([H|T], Inputs, Outputs):-
+    execute_gate(H, Inputs, NewInputs),
+    signal_calculator(T, NewInputs, Outputs).
 
 
 /* execute_gate(Gate, Inputs, Intermediary, Result) */
-execute_gate(gate(Name, Operation, Input, Output), Inputs, Intermediary, Result):-
+execute_gate(gate(Name, Operation, Input, Output), Inputs, Result):-
     bit_ops_result(Inputs, Operation, Input, BitOpsResult),
     insert_output(Intermediary, Output, BitOpsResult, Result).
 
