@@ -51,9 +51,17 @@ bit_ops_result(Inputs, not, Bit, 1):-
     !.
 bit_ops_result(_, not, _, 0):-!.
 /* XOR operation */
-bit_ops_result(Inputs, xor, [sig(_, Value)], Value):-!.
-bit_ops_result(Inputs, xor, [sig(_, 1)], Result):-
-    /*AICI AI RAMAS*/
+bit_ops_result(Inputs, xor, [T], 1):-
+    is_true(Inputs, T),
+    !.
+bit_ops_result(_, xor, [T], 0):-!.
+bit_ops_result(Inputs, xor, [H|T], Result):-
+    not(is_true(Inputs, H)),
+    bit_ops_result(Inputs, xor, T, Result),
+    !.
+bit_ops_result(Inputs, xor, [_|T], Result):-
+    bit_ops_result(Inputs, xor, T, ResultNeg),
+    negate(ResultNeg, Result).
 
 
 /* negate */
