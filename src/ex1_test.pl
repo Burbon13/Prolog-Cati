@@ -8,10 +8,58 @@ circuit([
     com("Gate to generate the sum bit"),
     gate(x2, xor, [t1, i3], o1),
     gate(a1, and, [i1, i2], t2),
+    gate(a4, not, i1, o5),
     gate(a2, and, [i3, t1], t3),
     com("Gate to generate the transport bit"),
-    gate(O1, or, [t3, t2], o2)
+    gate(o1, or, [t3, t2], o2)
 ]),
+circuit([
+    gate(x1, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(x2, xor, [t1, i3], o1),
+    com("Gate to generate the sum bit"),
+    gate(a1, and, [i1, i2], t2),
+    com("Gate to generate the sum bit"),
+    gate(a2, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(o1, or, [t3, t2], o2),
+    com("Gate to generate the sum bit")
+]),
+circuit([
+    gate(x1, xor, [i1, i2], t1),
+    gate(x2, xor, [t1, i3], o1),
+    gate(a1, and, [i1, i2], t2),
+    gate(a2, and, [i3, t1], t3),
+    gate(o1, or, [t3, t2], o2)
+]),
+not(circuit([
+    gate(x1, xor, [i1, i2], t1),
+    gate(x2, xor, [t1, i3], o1),
+    gate(a1, and, [i1, i2], t2),
+    com("Gate to generate the transport bit"),
+    com("Gate to generate the transport bit"),
+    gate(a2, and, [i3, t1], t3),
+    gate(o1, or, [t3, t2], o2)
+])),
+not(circuit([
+    gate(x1, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(x2, xor, [t1, i3], o1),
+    gate(a1, aand, [i1, i2], t2),
+    gate(a2, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(o1, or, [t3, t2], o2)
+])),
+not(circuit([
+    gate(x1, xor, [i1, i2], t1),
+    com("Gate to generate the sum bit"),
+    gate(x2, xor, [t1, i3], o1),
+    gate(a1, aand, [i1, i2], t2),
+    gate(a2, and, [i3, t1], t3),
+    com("Gate to generate the transport bit"),
+    gate(o1, or, [t3, t2], o2),
+    gate(o1, not, [t3, t2], o2)
+])),
 
 /* is_gate */
 is_gate(gate(g1, or, [i1, i2, i3], o1)),
