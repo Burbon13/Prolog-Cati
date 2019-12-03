@@ -72,8 +72,10 @@ Ro7 =:= 1,
 bit_ops_result([sig(t1,0), sig(t2,0), sig(t3,0), sig(t20,1)], nand, [t1,t2,t3,t20], Ro8),
 Ro8 =:= 1,
 /* NOT */
-bit_ops_result([sig(t1,1), sig(t2,0)], nand, t1, 1),
-bit_ops_result([sig(t1,1), sig(t2,0)], nand, t2, 0),
+bit_ops_result([sig(t1,1), sig(t2,0)], not, t1, V1),
+V1 =:= 0,
+bit_ops_result([sig(t1,1), sig(t2,0)], not, t2, V2),
+V2 =:= 1,
 
 /* hav_value */
 has_value([sig(o1, 0),sig(o2, 0),sig(o3, 1)], o1, 0),

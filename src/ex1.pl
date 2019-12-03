@@ -46,9 +46,14 @@ bit_ops_result(Inputs, nand, Bits, Result):-
     negate(NotResult, Result),
     !.
 /* NOT operation*/
-bits_ops(Inputs, not, Bit, 1):-
+bit_ops_result(Inputs, not, Bit, 1):-
     not(is_true(Inputs, Bit)),
     !.
+bit_ops_result(_, not, _, 0):-!.
+/* XOR operation */
+bit_ops_result(Inputs, xor, [sig(_, Value)], Value):-!.
+bit_ops_result(Inputs, xor, [sig(_, 1)], Result):-
+    /*AICI AI RAMAS*/
 
 
 /* negate */
