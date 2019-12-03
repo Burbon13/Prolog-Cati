@@ -1,13 +1,25 @@
 /* Exercise 2 - Circuits */
 
 
+/* remove_comments(List, Res) removes the comments from List and saves the
+ * result inside Res */
+delete_comments([], []):-!.
+delete_comments([H|T], Res):-
+    is_comment(H),
+    delete_comments(T, Res),
+    !.
+delete_comments([H|T], [H|Res]):-
+    is_gate(H),
+    delete_comments(T, Res).
+
+
 /* circuit(X) is True if X is a term that representa a combinational
  * logic circuit, in the form of a list of circuits */
 circuit(List):-
     circuit_verifier(List, 1).
 
 
-/*  */
+/* Ask author for further explanations */
 circuit_verifier([], _):-!.
 circuit_verifier([H|T], 1):-
     is_gate(H),
