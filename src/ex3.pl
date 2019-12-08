@@ -7,11 +7,31 @@ canget(state(posM(3, middle), onfloor, boxes(
 ), hasnot), R)
 */
 
+canget_wrapper(RoomNr, Position):-
+    canget(
+        state(
+            posM(RoomNr, Position),
+            onfloor,
+            boxes(
+                posM(1, window),
+                posM(2, window),
+                posM(3, window),
+                posM(4, window)
+            ),
+            hasnot
+        ),
+        R
+    ),
+    pretty_print(R).
+
+pretty_print([H|T]):-
+    writeln(H),
+    pretty_print(T).
+
 /* canget(S) True if S is a state from which the monkey can get the banana */
 canget(state(_, _, _, has),[]):-!.
 canget(State1, [Move | Res]):-
     move(State1, Move, State2),
-    writeln(Move),
     canget(State2, Res),
     !.
 
@@ -50,7 +70,7 @@ move(
         ),
         has
     )
-).
+):-!.
 
 /* === Climb box === */
 move(
@@ -77,7 +97,7 @@ move(
         ),
         hasnot
     )
-).
+):-!.
 
 /* === Push box === */
 /* Box nr. 1 */
