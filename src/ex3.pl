@@ -1,12 +1,25 @@
-/* Call with:
-canget(state(posM(3, middle), onfloor, boxes(
-    posM(1, window),
-    posM(2, window),
-    posM(3, window),
-    posM(4, window)
-), hasnot), R)
+/* ====================== EXTENDEN MONKEY DEVOIR ====================== */
+/* To run, use the following code:
+
+canget_wrapper(RoomNr, Position).
+
+RoomNr - can be 1, 2, 3 or 4
+Position - can be middle, window or door
+
+Examples:
+
+canget_wrapper(4, window).
+canget_wrapper(2, door).
+canget_wrapper(3, middle).
 */
 
+
+/* Wrapper predicate for canget so that the user only has to specify
+ * the start room number and the position of the monkey.
+ * At the end it will print the executed moves that led the monkey to
+ * the bananas.
+ * It is guaranteed that there will always be a solution (if valid params
+ * are userd). */
 canget_wrapper(RoomNr, Position):-
     canget(
         state(
@@ -24,6 +37,7 @@ canget_wrapper(RoomNr, Position):-
     ),
     pretty_print(R).
 
+/* Prints a list, each element on a new line. */
 pretty_print([H|T]):-
     writeln(H),
     pretty_print(T).
@@ -37,7 +51,7 @@ canget(State1, [Move | Res]):-
 
 
 /* The goal of the game: a situation in which the monkey has the banana.
- * Structure: state(horizontal pos, vertical pos, box position, has/has not
+ * Structure: state(Monkey position, onfloor/onboxes, Box positions, has/hasnot
  * banana) */
 state(_, _, _, has).
 
@@ -46,6 +60,8 @@ state(_, _, _, has).
 /* move(Initial state, Type of move, After move state) */
 
 /* === Grasp banana === */
+/* All of the boxes are put into place and the monkey is on top of them.
+ * We can get that banana! */
 move(
     state(
         posM(4, middle),
@@ -73,6 +89,8 @@ move(
 ):-!.
 
 /* === Climb box === */
+/* All of the boxes are put into place and the monkey is on next to them.
+ * We can climb those boxes! */
 move(
     state(
         posM(4, middle),
@@ -100,7 +118,7 @@ move(
 ):-!.
 
 /* === Push box === */
-/* Box nr. 1 */
+/* Box nr. 1: will be the first box to be pushed */
 move(
     state(
         MonkeyPos1,
@@ -127,7 +145,9 @@ move(
     )
 ):-
     next_push(MonkeyPos1, MonkeyPos2).
-/* Box nr. 2 */
+
+/* Box nr. 2: will be able to push it only after box nr. 1 is placed in
+ * room 4, middle */
 move(
     state(
         MonkeyPos1,
@@ -155,7 +175,8 @@ move(
 ):-
     next_push(MonkeyPos1, MonkeyPos2).
 
-/* Box nr. 3 */
+/* Box nr. 3: will be able to push it only after box nr. 2 is placed in
+ * room 4, middle */
 move(
     state(
         MonkeyPos1,
@@ -183,7 +204,8 @@ move(
 ):-
     next_push(MonkeyPos1, MonkeyPos2).
 
-/* Box nr. 4 */
+/* Box nr. 4: will be able to push it only after box nr. 3 is placed in
+ * room 4, middle */
 move(
     state(
         MonkeyPos1,
@@ -229,8 +251,10 @@ move(
 ):-
     next_pos(MonkeyPos1, BoxPos, MonkeyPos2).
 
-/* Next walking position generator */
+/* == Next walking position generator   */
+/* middle -> door: (same room) */
 next_pos(posM(Room, middle), _, posM(Room, door)).
+/* middle -> window: only if box nr. 1 was not moved (room nr 1) */
 next_pos(
     posM(1, middle),
     boxes(
@@ -241,6 +265,7 @@ next_pos(
     ),
     posM(1, window)
 ).
+/* door -> window: only if box nr. 1 was not moved (room nr 1) */
 next_pos(
     posM(1, door),
     boxes(
@@ -251,6 +276,8 @@ next_pos(
     ),
     posM(1, window)
 ).
+/* middle -> window: only if box nr. 2 was not moved (room nr 2) and box nr. 1
+ * is placed at middle, room 4*/
 next_pos(
     posM(2, middle),
     boxes(
@@ -261,6 +288,8 @@ next_pos(
     ),
     posM(2, window)
 ).
+/* door -> window: only if box nr. 2 was not moved (room nr 2) and box nr. 1
+ * is placed at middle, room 4*/
 next_pos(
     posM(2, door),
     boxes(
@@ -271,6 +300,8 @@ next_pos(
     ),
     posM(2, window)
 ).
+/* middle -> window: only if box nr. 3 was not moved (room nr 3) and boxes
+ * nr. 1 & 2 are placed at middle, room 4*/
 next_pos(
     posM(3, middle),
     boxes(
@@ -281,6 +312,8 @@ next_pos(
     ),
     posM(3, window)
 ).
+/* door -> window: only if box nr. 3 was not moved (room nr 3) and boxes
+ * nr. 1 & 2 are placed at middle, room 4*/
 next_pos(
     posM(3, door),
     boxes(
@@ -291,6 +324,8 @@ next_pos(
     ),
     posM(3, window)
 ).
+/* middle -> window: only if box nr. 4 was not moved (room nr 4) and boxes
+ * nr. 1 & 2 & 3 are placed at middle, room 4*/
 next_pos(
     posM(4, middle),
     boxes(
@@ -301,6 +336,8 @@ next_pos(
     ),
     posM(4, window)
 ).
+/* door -> window: only if box nr. 4 was not moved (room nr 4) and boxes
+ * nr. 1 & 2 & 3 are placed at middle, room 4*/
 next_pos(
     posM(4, door),
     boxes(
@@ -311,9 +348,9 @@ next_pos(
     ),
     posM(4, window)
 ).
-/*next_pos(posM(Room, door), posM(Room, middle)).*/
+/* Move from window to door (same room) */
 next_pos(posM(Room, window), _, posM(Room, door)).
-/*next_pos(posM(Room, window), posM(Room, middle)).*/
+/* Move from room 4 to 1 if no box was moved */
 next_pos(
     posM(4, door),
     boxes(
@@ -324,6 +361,7 @@ next_pos(
     ),
     posM(1, door)
 ).
+/* Move from room 4 to 2 if box 1 was placed and the rest not */
 next_pos(
     posM(4, door),
     boxes(
@@ -334,6 +372,7 @@ next_pos(
     ),
     posM(2, door)
 ).
+/* Move from room 4 to 3 if boxes 1 & 2 were placed and the rest not */
 next_pos(
     posM(4, door),
     boxes(
@@ -344,7 +383,7 @@ next_pos(
     ),
     posM(3, door)
 ).
-/* nex_pos(posM(1, door), posM(4, door)). */
+/* Move from room 2 to 4 is monkey starts here */
 next_pos(
     posM(2, door),
     boxes(
@@ -355,6 +394,7 @@ next_pos(
     ),
     posM(4, door)
 ).
+/* Move from room 3 to 4 is monkey starts here */
 next_pos(
     posM(3, door),
     boxes(
@@ -366,16 +406,10 @@ next_pos(
     posM(4, door)
 ).
 
-/* Next pushing position generator */
-/* next_push(posM(Room, middle), posM(Room, door)).*/
-/*next_push(posM(Room, middle), posM(Room, window)).*/
-/*next_push(posM(Room, door), posM(Room, window)).*/
+/* Next box pushing position generator */
 next_push(posM(Room, door), posM(Room, middle)).
 next_push(posM(Room, window), posM(Room, door)).
 next_push(posM(Room, window), posM(Room, middle)).
-/*next_push(posM(4, door), posM(1, door)).*/
-/*next_push(posM(4, door), posM(2, door)).*/
-/*next_push(posM(4, door), posM(3, door)).*/
 next_push(posM(1, door), posM(4, door)).
 next_push(posM(2, door), posM(4, door)).
 next_push(posM(3, door), posM(4, door)).
