@@ -1,9 +1,17 @@
-/* Initial state: state(posM(nr, pos), onfloor, boxes(-1,-1,-1,-1), hasnot) */
+/* Call with:
+canget(state(posM(3, middle), onfloor, boxes(
+    posM(1, window),
+    posM(2, window),
+    posM(3, window),
+    posM(4, window)
+), hasnot), R)
+*/
 
 /* canget(S) True if S is a state from which the monkey can get the banana */
 canget(state(_, _, _, has),[]):-!.
 canget(State1, [Move | Res]):-
     move(State1, Move, State2),
+    print(Move),
     canget(State2, Res),
     !.
 
@@ -79,9 +87,9 @@ move(
         onfloor,
         boxes(
             MonkeyPos1,
-            -1,
-            -1,
-            -1
+            posM(2, window),
+            posM(3, window),
+            posM(4, window)
         ),
         hasnot
     ),
@@ -91,14 +99,14 @@ move(
         onfloor,
         boxes(
             MonkeyPos2,
-            -1,
-            -1,
-            -1
+            posM(2, window),
+            posM(3, window),
+            posM(4, window)
         ),
         hasnot
     )
 ):-
-    nex_pos(MonkeyPos1, MonkeyPos2).
+    next_push(MonkeyPos1, MonkeyPos2).
 /* Box nr. 2 */
 move(
     state(
@@ -107,8 +115,8 @@ move(
         boxes(
             posM(4, middle),
             MonkeyPos1,
-            -1,
-            -1
+            posM(3, window),
+            posM(4, window)
         ),
         hasnot
     ),
@@ -119,13 +127,13 @@ move(
         boxes(
             posM(4, middle),
             MonkeyPos2,
-            -1,
-            -1
+            posM(3, window),
+            posM(4, window)
         ),
         hasnot
     )
 ):-
-    nex_pos(MonkeyPos1, MonkeyPos2).
+    next_push(MonkeyPos1, MonkeyPos2).
 
 /* Box nr. 3 */
 move(
@@ -136,7 +144,7 @@ move(
             posM(4, middle),
             posM(4, middle),
             MonkeyPos1,
-            -1
+            posM(4, window)
         ),
         hasnot
     ),
@@ -148,12 +156,12 @@ move(
             posM(4, middle),
             posM(4, middle),
             MonkeyPos2,
-            -1
+            posM(4, window)
         ),
         hasnot
     )
 ):-
-    nex_pos(MonkeyPos1, MonkeyPos2).
+    next_push(MonkeyPos1, MonkeyPos2).
 
 /* Box nr. 4 */
 move(
@@ -164,7 +172,7 @@ move(
             posM(4, middle),
             posM(4, middle),
             posM(4, middle),
-            MonkeyPos1,
+            MonkeyPos1
         ),
         hasnot
     ),
@@ -176,12 +184,12 @@ move(
             posM(4, middle),
             posM(4, middle),
             posM(4, middle),
-            MonkeyPos2,
+            MonkeyPos2
         ),
         hasnot
     )
 ):-
-    nex_pos(MonkeyPos1, MonkeyPos2).
+    next_push(MonkeyPos1, MonkeyPos2).
 
 /* === Monkey walk === */
 move(
@@ -199,18 +207,155 @@ move(
         hasnot
     )
 ):-
-    nex_pos(MonkeyPos1, MonkeyPos2).
+    next_pos(MonkeyPos1, BoxPos, MonkeyPos2).
 
 /* Next walking position generator */
-nex_pos(posM(Room, middle), posM(Room, door)).
-nex_pos(posM(Room, middle), posM(Room, window)).
-nex_pos(posM(Room, door), posM(Room, window)).
-nex_pos(posM(Room, door), posM(Room, middle)).
-nex_pos(posM(Room, window), posM(Room, door)).
-nex_pos(posM(Room, window), posM(Room, middle)).
-nex_pos(posM(4, door), posM(1, door)).
-nex_pos(posM(4, door), posM(2, door)).
-nex_pos(posM(4, door), posM(3, door)).
-nex_pos(posM(1, door), posM(4, door)).
-nex_pos(posM(2, door), posM(4, door)).
-nex_pos(posM(3, door), posM(4, door)).
+next_pos(posM(Room, middle), _, posM(Room, door)).
+next_pos(
+    posM(1, middle),
+    boxes(
+        posM(1, window),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(1, window)
+).
+next_pos(
+    posM(1, door),
+    boxes(
+        posM(1, window),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(1, window)
+).
+next_pos(
+    posM(2, middle),
+    boxes(
+        posM(4, middle),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(2, window)
+).
+next_pos(
+    posM(2, door),
+    boxes(
+        posM(4, middle),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(2, window)
+).
+next_pos(
+    posM(3, middle),
+    boxes(
+        posM(4, middle),
+        posM(4, middle),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(3, window)
+).
+next_pos(
+    posM(3, door),
+    boxes(
+        posM(4, middle),
+        posM(4, middle),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(3, window)
+).
+next_pos(
+    posM(4, middle),
+    boxes(
+        posM(4, middle),
+        posM(4, middle),
+        posM(4, middle),
+        posM(4, window)
+    ),
+    posM(4, window)
+).
+next_pos(
+    posM(4, door),
+    boxes(
+        posM(4, middle),
+        posM(4, middle),
+        posM(4, middle),
+        posM(4, window)
+    ),
+    posM(4, window)
+).
+/*next_pos(posM(Room, door), posM(Room, middle)).*/
+next_pos(posM(Room, window), _, posM(Room, door)).
+/*next_pos(posM(Room, window), posM(Room, middle)).*/
+next_pos(
+    posM(4, door),
+    boxes(
+        posM(1, window),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(1, door)
+).
+next_pos(
+    posM(4, door),
+    boxes(
+        posM(4, middle),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(2, door)
+).
+next_pos(
+    posM(4, door),
+    boxes(
+        posM(4, middle),
+        posM(4, middle),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(3, door)
+).
+/* nex_pos(posM(1, door), posM(4, door)). */
+next_pos(
+    posM(2, door),
+    boxes(
+        posM(1, window),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(4, door)
+).
+next_pos(
+    posM(3, door),
+    boxes(
+        posM(1, window),
+        posM(2, window),
+        posM(3, window),
+        posM(4, window)
+    ),
+    posM(4, door)
+).
+
+/* Next pushing position generator */
+next_push(posM(Room, middle), posM(Room, door)).
+next_push(posM(Room, middle), posM(Room, window)).
+next_push(posM(Room, door), posM(Room, window)).
+next_push(posM(Room, door), posM(Room, middle)).
+next_push(posM(Room, window), posM(Room, door)).
+next_push(posM(Room, window), posM(Room, middle)).
+next_push(posM(4, door), posM(1, door)).
+next_push(posM(4, door), posM(2, door)).
+next_push(posM(4, door), posM(3, door)).
+next_push(posM(1, door), posM(4, door)).
+next_push(posM(2, door), posM(4, door)).
+next_push(posM(3, door), posM(4, door)).
