@@ -17,7 +17,7 @@ state(_, _, _, has).
 /* Grasp banana */
 move(state(middle, onbox, middle, hasnot),
      grasp,
-     state(middle, onbox, middle, has)):-!.
+     state(middle, onbox, middle, has)).
 /* Climb box */
 move(state(MonkeyPos, onfloor, MonkeyPos, H),
     climb,
