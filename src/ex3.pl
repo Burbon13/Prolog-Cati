@@ -11,7 +11,7 @@ canget(state(posM(3, middle), onfloor, boxes(
 canget(state(_, _, _, has),[]):-!.
 canget(State1, [Move | Res]):-
     move(State1, Move, State2),
-    print(Move),
+    writeln(Move),
     canget(State2, Res),
     !.
 
@@ -347,15 +347,15 @@ next_pos(
 ).
 
 /* Next pushing position generator */
-next_push(posM(Room, middle), posM(Room, door)).
-next_push(posM(Room, middle), posM(Room, window)).
-next_push(posM(Room, door), posM(Room, window)).
+/* next_push(posM(Room, middle), posM(Room, door)).*/
+/*next_push(posM(Room, middle), posM(Room, window)).*/
+/*next_push(posM(Room, door), posM(Room, window)).*/
 next_push(posM(Room, door), posM(Room, middle)).
 next_push(posM(Room, window), posM(Room, door)).
 next_push(posM(Room, window), posM(Room, middle)).
-next_push(posM(4, door), posM(1, door)).
-next_push(posM(4, door), posM(2, door)).
-next_push(posM(4, door), posM(3, door)).
+/*next_push(posM(4, door), posM(1, door)).*/
+/*next_push(posM(4, door), posM(2, door)).*/
+/*next_push(posM(4, door), posM(3, door)).*/
 next_push(posM(1, door), posM(4, door)).
 next_push(posM(2, door), posM(4, door)).
 next_push(posM(3, door), posM(4, door)).
