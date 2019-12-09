@@ -13,14 +13,15 @@ signal(Connection, Circuit, Inputs, Value):-
 /* signal_calculator(Circuit, Inputs, Intermediary, Outputs) */
 signal_calculator([], Outputs, Outputs):-!.
 signal_calculator([H|T], Inputs, Outputs):-
+    writeln(Inputs),
     execute_gate(H, Inputs, NewInputs),
     signal_calculator(T, NewInputs, Outputs).
 
 
 /* execute_gate(Gate, Inputs, Intermediary, Result) */
-execute_gate(gate(Name, Operation, Input, Output), Inputs, Result):-
+execute_gate(gate(_, Operation, Input, Output), Inputs, Result):-
     bit_ops_result(Inputs, Operation, Input, BitOpsResult),
-    insert_output(Intermediary, Output, BitOpsResult, Result).
+    insert_output(Inputs, Output, BitOpsResult, Result).
 
 
 /* bit_ops_result(Inputs, Operation, Bits, Result) */
