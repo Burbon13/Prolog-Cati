@@ -1,4 +1,4 @@
-# Prolog Homework 2 instructions
+# Prolog Homework instructions
 
 You will find the solved exercises (from "Devoir 2 en" file) inside the **src** folder.
 
