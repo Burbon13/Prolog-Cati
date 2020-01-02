@@ -8,5 +8,5 @@ I have also written a series of tests for exercises 1 and 2. You will find the i
 
 ## Outcomes
 
-- I have gained a better understanding of how Prolog works (backtracing, cuts, etc.).
+- I have gained a better understanding of how Prolog works (backtracking, cuts, etc.).
 - I have managed to develop a declarative programming mindset.
